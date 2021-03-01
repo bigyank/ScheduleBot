@@ -4,7 +4,6 @@ const fs = require('fs');
 const Discord = require('discord.js');
 
 const { getOnTime } = require('./utils/getOnTime');
-const { get } = require('http');
 
 const prefix = '?';
 
@@ -15,10 +14,10 @@ const commandFiles = fs
   .readdirSync('./src/commands')
   .filter((file) => file.endsWith('.js'));
 
-for (const file of commandFiles) {
+commandFiles.map((file) => {
   const command = require(`./commands/${file}`);
-  client.commands.set(command.name, command);
-}
+  return client.commands.set(command.name, command);
+});
 
 client.on('ready', () => {
   console.log('I am ready!');
@@ -27,7 +26,6 @@ client.on('ready', () => {
   const channelToSend = client.channels.cache.find(
     (channel) => channel.name === 'alert',
   );
-
   /**
    * At minute 20 and 50 past every hour
    * from 6 through 20
@@ -35,8 +33,7 @@ client.on('ready', () => {
    * from Tuesday through Friday.
    */
   schedule.scheduleJob('20,50 6-20 * * 0,2-5', async () => {
-    const newDateObj = new Date(new Date().getTime() + 10 * 60000);
-    const richClasses = await getOnTime(newDateObj);
+    const richClasses = await getOnTime();
     if (richClasses.length) {
       channelToSend.send(
         '<@&814767960442535936> Heads up! Next Class in 10 minutes',
