@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const { returnByDay } = require('../utils/returnByDay');
 
 const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-const weekday = days[new Date().getDay()];
 
 const returnRichClass = async (message, day) => {
   const richClasses = await returnByDay(day);
@@ -20,6 +19,7 @@ module.exports = {
   name: 'class',
   description: 'get all classes of current date',
   async execute(message, args) {
+    const weekday = days[new Date().getDay()];
     if (!args.length || !days.includes(args[0].toLowerCase())) {
       returnRichClass(message, weekday);
     } else {
