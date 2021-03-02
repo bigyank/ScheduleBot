@@ -4,7 +4,7 @@ const createEmbed = require('./createClassInfo');
 const days = [
   'Sunday',
   'Monday',
-  'Tueday',
+  'Tuesday',
   'Wednesday',
   'Thursday',
   'Friday',
